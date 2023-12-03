@@ -17,6 +17,10 @@ public class Main {
         ArrayList<Node> closedNode = new ArrayList<Node>();
         ArrayList<Node> fringeNode2 = new ArrayList<Node>();
         ArrayList<Character> fringe2 = new ArrayList<Character>();
+        ArrayList<ArrayList<Character>> fringe3 = new ArrayList<ArrayList<Character>>();
+        ArrayList<ArrayList<Character>> closed3 = new ArrayList<ArrayList<Character>>();
+        ArrayList<ArrayList<Node>> fringeNode3 = new ArrayList<ArrayList<Node>>();
+        ArrayList<ArrayList<Node>> closedNode3 = new ArrayList<ArrayList<Node>>();
         //Ask if the user wants to add at the front or back of the fringe
         System.out.println("Do you want to add at the front or back of the fringe? (Enter 1 for front or 2 for back)");
         int add = input.nextInt();
@@ -55,41 +59,37 @@ public class Main {
         else {
             System.out.println("Incorrect input. It should be 1 or 2");
         }
-        do {
-            
-
-        
+        do {   
             //Add a value to the fringe
             if (ifValues) {
-                if (easyMode) {
-                    if (!isinClosed) {
-                        System.out.println("Enter how many to add: ");
-                        int number = input.nextInt();
+                if (!isinClosed) {
+                    System.out.println("Enter how many to add: ");
+                    int number = input.nextInt();
 
-                        for (int i = 0; i < number; i++) {
-                            System.out.println("Enter a heuristic/uniform/a* search value: ");
-                            int value1 = input.nextInt();
-                            System.out.println("Enter the path: ");
-                            String letters1 = input.next();
-                            char letter = letters1.charAt(letters1.length()-1);
-                            Node node = new Node(value1, letter, letters1);
-                            fringeNode.add(node);
-                        }
-                        //Sort the values in ascending order
-                        for (int i = 0; i < fringeNode.size(); i++) {
-                            for (int j = i + 1; j < fringeNode.size(); j++) {
-                                if (fringeNode.get(i).getValue() > fringeNode.get(j).getValue()) {
-                                    Node temp = fringeNode.get(i);
-                                    fringeNode.set(i, fringeNode.get(j));
-                                    fringeNode.set(j, temp);
-                                }
+                    for (int i = 0; i < number; i++) {
+                        System.out.println("Enter a heuristic/uniform/a* search value: ");
+                        int value1 = input.nextInt();
+                        System.out.println("Enter the path: ");
+                        String letters1 = input.next();
+                        char letter = letters1.charAt(letters1.length()-1);
+                        Node node = new Node(value1, letter, letters1);
+                        fringeNode.add(node);
+                    }
+                    //Sort the values in ascending order
+                    for (int i = 0; i < fringeNode.size(); i++) {
+                        for (int j = i + 1; j < fringeNode.size(); j++) {
+                            if (fringeNode.get(i).getValue() > fringeNode.get(j).getValue()) {
+                                Node temp = fringeNode.get(i);
+                                fringeNode.set(i, fringeNode.get(j));
+                                fringeNode.set(j, temp);
                             }
                         }
                     }
-                    else {
-                        System.out.println("Skipped since the letter was already in the closed list");
-                    }
                 }
+                else {
+                    System.out.println("Skipped since the letter was already in the closed list");
+                }
+
             }
 
             if (easyMode && !ifValues)
@@ -216,12 +216,15 @@ public class Main {
                 if (!ifValues) {
                      if (fringe.get(0) == 'G') {
                         System.out.println("The goal has been found");
+                        fringe3.add(new ArrayList<>(fringe));
                         break;
                     }
                     else if (fringe.isEmpty()) {
                         System.out.println("The goal has not been found");
                     }
 
+                    fringe3.add(new ArrayList<>(fringe));
+                    closed3.add(new ArrayList<>(closed));
                     char top = fringe.get(0);
                     fringe.remove(0);
                     fringe2.add(top);
@@ -247,12 +250,15 @@ public class Main {
 
                     if (fringeNode.get(0).getLetter() == 'G') {
                         System.out.println("The goal has been found");
+                        fringeNode3.add(new ArrayList<>(fringeNode));
                         break;
                     }
                     else if (fringeNode.isEmpty()) {
                         System.out.println("The goal has not been found");
                     }
 
+                    fringeNode3.add(new ArrayList<>(fringeNode));
+                    closedNode3.add(new ArrayList<>(closedNode));
                     Node top = fringeNode.get(0);
                     fringeNode.remove(0);
                     fringeNode2.add(top);
@@ -312,12 +318,15 @@ public class Main {
         else
         {
             System.out.println("The path to the goal is: " + fringe2.get(fringe2.size()-1));
-
+            System.out.println("The cost of the path is: " + fringe3.get(0));
             //Print the fringe
-            System.out.println("The fringe is: " + fringe2);
-
+            for (int i = fringe3.size()-1; i >= 0; i--) {
+                System.out.println("The fringe is: " + fringe3.get(i));
+            }
             //Print the closed list
-            System.out.println("The closed list is: " + closed);
+            for (int i = closed3.size()-1; i >= 0; i--) {
+                System.out.println("The closed list is: " + closed3.get(i));
+            }
         }
         input.close();
     }
