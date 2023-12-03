@@ -269,6 +269,7 @@ public class Main {
                      if (fringe.get(0) == 'G') {
                         System.out.println("The goal has been found");
                         fringe3.add(new ArrayList<>(fringe));
+                        closed3.add(new ArrayList<>(closed));
                         break;
                     }
                     else if (fringe.isEmpty()) {
@@ -303,6 +304,7 @@ public class Main {
                     if (fringeNode.get(0).getLetter() == 'G') {
                         System.out.println("The goal has been found");
                         fringeNode3.add(new ArrayList<>(fringeNode));
+                        closedNode3.add(new ArrayList<>(closedNode));
                         break;
                     }
                     else if (fringeNode.isEmpty()) {
@@ -370,7 +372,6 @@ public class Main {
         else
         {
             System.out.println("The path to the goal is: " + fringe2.get(fringe2.size()-1));
-            System.out.println("The cost of the path is: " + fringe3.get(0));
             //Print the fringe
             for (int i = fringe3.size()-1; i >= 0; i--) {
                 System.out.println("The fringe is: " + fringe3.get(i));
