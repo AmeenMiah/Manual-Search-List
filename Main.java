@@ -106,9 +106,10 @@ public class Main {
                 }
                 else
                 {
-                    if (!isinClosed) {
-                        System.out.println("Enter how many to add: ");
-                        int number = input.nextInt();
+                    System.out.println("Enter how many to add: ");
+                    int number = input.nextInt();
+                    if (!isinClosed & number > 0) {
+                        
 
                         for (int i = 0; i < number; i++) {
                             System.out.println("Enter a heuristic/uniform/a* search value: ");
@@ -130,15 +131,24 @@ public class Main {
                             }
                         }
                     }
+                    else if (number == 0)
+                    {
+                        System.out.println("Correct!");
+                    }
+                    else {
+                        System.out.println("Incorrect input. It should be 0 since the letter was already in the closed list");
+                    }
                 }
 
             }
 
             if (easyMode && !ifValues)
                 {   
-                    System.out.println("Enter how many to add: ");
-                    int number = input.nextInt();
-                    if (!isinClosed && number > 0) {
+                    
+                    if (!isinClosed) {
+                        System.out.println("Enter how many to add: ");
+                        int number = input.nextInt();
+
                         for (int i = 0; i < number; i++) {
                             System.out.println("Enter a letter: ");
                             char letter = input.next().charAt(0);
@@ -175,7 +185,7 @@ public class Main {
                     }
                     else
                     {
-                        System.out.println("Incorrect input. It should be 0 since the letter was already in the closed list");
+                        System.out.println("Skipped since the letter was already in the closed list");
                     }
                 }
                 else if (!easyMode && !ifValues)
@@ -207,8 +217,11 @@ public class Main {
                         //Delete current letters
                         letters.clear();
                     }
-                    else
+                    else if (number == 0)
                     {
+                        System.out.println("Correct!");
+                    }
+                    else {
                         System.out.println("Incorrect input. It should be 0 since the letter was already in the closed list");
                     }
                 }
