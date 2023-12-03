@@ -21,34 +21,20 @@ public class Main {
         ArrayList<ArrayList<Character>> closed3 = new ArrayList<ArrayList<Character>>();
         ArrayList<ArrayList<Node>> fringeNode3 = new ArrayList<ArrayList<Node>>();
         ArrayList<ArrayList<Node>> closedNode3 = new ArrayList<ArrayList<Node>>();
-        //Ask if the user wants to add at the front or back of the fringe
-        System.out.println("Do you want to add at the front or back of the fringe? (Enter 1 for front or 2 for back)");
-        int add = input.nextInt();
-        if (add == 1) {
-            addAtFront = true;
-        }
-        else if (add == 2) {
-            addAtFront = false;
-        }
-        else {
-            System.out.println("Incorrect input. It should be 1 or 2");
-        }
+
 
         //Ask if the user wants to add in easy mode or hard mode
         System.out.println("Do you want to add in easy mode or hard mode? (Enter 1 for easy or 2 for hard)");
         int mode = input.nextInt();
-        if (mode == 1) {
-            easyMode = true;
-        }
-        else if (mode == 2) {
+        if (mode == 2) {
             easyMode = false;
         }
         else {
-            System.out.println("Incorrect input. It should be 1 or 2");
+            easyMode = true;
         }
 
         //Ask if the user wants to add a value or a letter
-        System.out.println("Do you want to add a value or a letter? (Enter 1 for value or 2 for letter)");
+        System.out.println("Do you want to perform cost searches (A*/UCS/Best-First Greedy Search) or Breadth First/Depth First Searches? (Enter 1 for cost searches or 2 for BFS/DFS)");
         int valueOrLetter = input.nextInt();
         if (valueOrLetter == 1) {
             ifValues = true;
@@ -59,47 +45,100 @@ public class Main {
         else {
             System.out.println("Incorrect input. It should be 1 or 2");
         }
+
+        if (!ifValues) {
+            if (easyMode) {
+                //Ask if the user wants to add at the front or back of the fringe
+                System.out.println("Do you want to add at the front (DFS) or back of the fringe (BFS)? (Enter 1 for front or 2 for back)");
+                int add = input.nextInt();
+                if (add == 2) {
+                    addAtFront = false;
+                }
+                else{
+                    addAtFront = true;
+                }
+            }
+            else
+            {
+                //Ask if the user wants to add at the front or back of the fringe
+                System.out.println("Do you want to add at the front or back of the fringe? (Enter 1 for front or 2 for back)");
+                int add = input.nextInt();
+                if (add == 2) {
+                    addAtFront = false;
+                }
+                else{
+                    addAtFront = true;
+                }
+            }
+        }
+
         do {   
             //Add a value to the fringe
             if (ifValues) {
-                if (!isinClosed) {
-                    System.out.println("Enter how many to add: ");
-                    int number = input.nextInt();
+                if (easyMode) {
+                    if (!isinClosed) {
+                        System.out.println("Enter how many to add: ");
+                        int number = input.nextInt();
 
-                    for (int i = 0; i < number; i++) {
-                        System.out.println("Enter a heuristic/uniform/a* search value: ");
-                        int value1 = input.nextInt();
-                        System.out.println("Enter the path: ");
-                        String letters1 = input.next();
-                        char letter = letters1.charAt(letters1.length()-1);
-                        Node node = new Node(value1, letter, letters1);
-                        fringeNode.add(node);
-                    }
-                    //Sort the values in ascending order
-                    for (int i = 0; i < fringeNode.size(); i++) {
-                        for (int j = i + 1; j < fringeNode.size(); j++) {
-                            if (fringeNode.get(i).getValue() > fringeNode.get(j).getValue()) {
-                                Node temp = fringeNode.get(i);
-                                fringeNode.set(i, fringeNode.get(j));
-                                fringeNode.set(j, temp);
+                        for (int i = 0; i < number; i++) {
+                            System.out.println("Enter a heuristic/uniform/a* search value: ");
+                            int value1 = input.nextInt();
+                            System.out.println("Enter the path: ");
+                            String letters1 = input.next();
+                            char letter = letters1.charAt(letters1.length()-1);
+                            Node node = new Node(value1, letter, letters1);
+                            fringeNode.add(node);
+                        }
+                        //Sort the values in ascending order
+                        for (int i = 0; i < fringeNode.size(); i++) {
+                            for (int j = i + 1; j < fringeNode.size(); j++) {
+                                if (fringeNode.get(i).getValue() > fringeNode.get(j).getValue()) {
+                                    Node temp = fringeNode.get(i);
+                                    fringeNode.set(i, fringeNode.get(j));
+                                    fringeNode.set(j, temp);
+                                }
                             }
                         }
                     }
+                    else {
+                        System.out.println("Skipped since the letter was already in the closed list");
+                    }
                 }
-                else {
-                    System.out.println("Skipped since the letter was already in the closed list");
+                else
+                {
+                    if (!isinClosed) {
+                        System.out.println("Enter how many to add: ");
+                        int number = input.nextInt();
+
+                        for (int i = 0; i < number; i++) {
+                            System.out.println("Enter a heuristic/uniform/a* search value: ");
+                            int value1 = input.nextInt();
+                            System.out.println("Enter the path: ");
+                            String letters1 = input.next();
+                            char letter = letters1.charAt(letters1.length()-1);
+                            Node node = new Node(value1, letter, letters1);
+                            fringeNode.add(node);
+                        }
+                        //Sort the values in ascending order
+                        for (int i = 0; i < fringeNode.size(); i++) {
+                            for (int j = i + 1; j < fringeNode.size(); j++) {
+                                if (fringeNode.get(i).getValue() > fringeNode.get(j).getValue()) {
+                                    Node temp = fringeNode.get(i);
+                                    fringeNode.set(i, fringeNode.get(j));
+                                    fringeNode.set(j, temp);
+                                }
+                            }
+                        }
+                    }
                 }
 
             }
 
             if (easyMode && !ifValues)
                 {   
-                    if (!isinClosed) {
-                        System.out.println("Enter how many to add: ");
-                        int number = input.nextInt();
-
-
-
+                    System.out.println("Enter how many to add: ");
+                    int number = input.nextInt();
+                    if (!isinClosed && number > 0) {
                         for (int i = 0; i < number; i++) {
                             System.out.println("Enter a letter: ");
                             char letter = input.next().charAt(0);
@@ -136,7 +175,7 @@ public class Main {
                     }
                     else
                     {
-                        System.out.println("Skipped since the letter was already in the closed list");
+                        System.out.println("Incorrect input. It should be 0 since the letter was already in the closed list");
                     }
                 }
                 else if (!easyMode && !ifValues)
